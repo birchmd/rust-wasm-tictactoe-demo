@@ -7,6 +7,6 @@ The tictactoe engine is found in `src/main.rs`, while the code for the players i
 To build and run the example:
 ```shell
 $ cargo build
-$ wasm-pack build
-$ ./target/debug/tictactoe-engine ./pkg/tictactoe_engine_bg.wasm ./pkg/tictactoe_engine_bg.wasm
+$ cargo build --target wasm32-unknown-unknown --release
+$ ./target/debug/tictactoe-engine ./target/wasm32-unknown-unknown/release/player.wasm ./target/wasm32-unknown-unknown/release/player.wasm
 ```

@@ -179,11 +179,11 @@ impl<'a> ModuleImportResolver for RuntimeModuleImportResolver {
         _signature: &Signature,
     ) -> Result<FuncRef, InterpreterError> {
         let func_ref = match field_name {
-            "__wbg_set_80db291cbad945c6" => FuncInstance::alloc_host(
+            "set" => FuncInstance::alloc_host(
                 Signature::new(&[ValueType::I32][..], None),
                 SET_FUNC_INDEX,
             ),
-            "__wbg_get_558f2ccec6e28a90" => FuncInstance::alloc_host(
+            "get" => FuncInstance::alloc_host(
                 Signature::new(&[ValueType::I32][..], Some(ValueType::I32)),
                 GET_FUNC_INDEX,
             ),
@@ -208,7 +208,7 @@ fn instantiate(path: &str) -> Result<ModuleRef, Error> {
     };
 
     let mut imports = ImportsBuilder::new();
-    imports.push_resolver("./tictactoe_engine", &RuntimeModuleImportResolver);
+    imports.push_resolver("env", &RuntimeModuleImportResolver);
 
     let instance = ModuleInstance::new(&module, &imports)?.assert_no_start();
 
