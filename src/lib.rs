@@ -2,12 +2,25 @@
 //It is compiled down to wasm using `cargo build --target wasm32-unknown-unknown`,
 //then run in the game engine.
 
-use std::iter::Iterator;
+#![no_std]
+#![feature(lang_items)]
 
 mod external {
-    extern {
+    extern "C" {
         pub fn get(idx: i32) -> i32;
         pub fn set(idx: i32);
+        pub fn panic(payload_ptr: *const u8, payload_len: u32) -> !;
+    }
+
+    #[lang = "eh_personality"]
+    extern "C" fn eh_personality() {}
+}
+
+#[no_mangle]
+#[panic_handler]
+pub fn panic_fmt(_info: &crate::core::panic::PanicInfo) -> ! {
+    unsafe {
+        external::panic(crate::core::ptr::null(), 0u32);
     }
 }
 
